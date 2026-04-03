@@ -14,7 +14,11 @@ pip install -U google-generativeai python-dotenv
 
   - Criar um arquivo .env na pasta indicada abaixo.
   - Utilizar a sua própria chave.
-  -largar o modelo do env!!!!!!!!!!!!
+    
+---
+   <p align="center"> 
+      <img src = "img/env.png">
+   </p>
 ---
 
 ### ❓ | Ajuda
