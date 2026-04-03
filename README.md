@@ -15,4 +15,4 @@ pip install -U google-generativeai python-dotenv
   - Utilizar a sua própria chave.
   -largar o modelo do env!!!!!!!!!!!!
 ### ❓ | Ajuda
-Como obter chave gratuitamente: https://www.youtube.com/watch?v=Uyn-P2nRvDA&t=14s
+Como obter chave gratuita: https://www.youtube.com/watch?v=Uyn-P2nRvDA&t=14s
