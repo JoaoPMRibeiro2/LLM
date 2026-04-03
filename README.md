@@ -19,7 +19,7 @@ pip install -U google-generativeai python-dotenv
  <div align="center">
   <kbd>
     <img src="img/env.png" alt="Modelo do arquivo .env na pasta indicada "><br>
-    Modelo do arquivo .env na pasta indicada contendo a key adquirida
+    Arquivo .env na pasta indicada contendo a key adquirida
   </kbd>
 </div>
 
