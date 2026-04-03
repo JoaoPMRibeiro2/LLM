@@ -9,16 +9,22 @@ pip install -U google-generativeai python-dotenv
 ```
 
 ---
+
 ## ⚠️ | Atenção 
 <p align = "justify">&emsp;A chave do agente utilizado não estará presente no repositório, pois, ao envia-la para o GitHub, há grandes chances de ser derrubada pelo próprio Google. Sendo assim, cabe a você:</p>
 
-  - Criar um arquivo .env na pasta indicada abaixo.
-  - Utilizar a sua própria chave.
-    
----
-   <p align="center"> 
-      <img src = "img/env.png">
-   </p>
+  - Criar um arquivo .env na pasta src 
+  - Utilizar a sua própria chave
+
+ <div align="center">
+  <kbd>
+    <img src="img/env.png" alt="Modelo do arquivo .env na pasta indicada "><br>
+    Modelo do arquivo .env na pasta indicada
+  </kbd>
+</div>
+
+
+   
 ---
 
 ### ❓ | Ajuda
