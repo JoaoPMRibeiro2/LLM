@@ -17,7 +17,7 @@ else:
     # Gera o conteúdo passando o modelo e o prompt
     response = client.models.generate_content(
         model='gemini-2.5-flash',
-        contents='Por que é importante usar variáveis de ambiente?'
+        contents='Qual é a capital da França?'
     )
     
     print(response.text)
