@@ -1,0 +1,18 @@
+<p align = "center"> Instruções de execução </p>
+<p align = "justify"> Para executar a aplicação, faz-se necessário instalar os seguintes pacotes: </p>
+ 
+  - google-generativeai (api gemini)
+  - python-dotenv (arquivo que armazenará key da api)
+
+```bash
+pip install -U google-generativeai python-dotenv
+```
+
+---
+## ⚠️ | Atenção 
+  A chave do agente utilizado não estará presente no repositório, pois, ao envia-la para o GitHub, há grandes chances de ser derrubada pelo próprio Google. Sendo assim, cabe a você:
+  - Criar um arquivo .env na pasta indicada abaixo.
+  - Utilizar a sua própria chave.
+  -largar o modelo do env!!!!!!!!!!!!
+### ❓ | Ajuda
+Como obter chave gratuitamente: https://www.youtube.com/watch?v=Uyn-P2nRvDA&t=14s
