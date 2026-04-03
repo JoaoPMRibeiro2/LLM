@@ -1,11 +1,11 @@
 <h2 align = "center"> Instruções de execução </h2>
 <p align = "justify">&emsp;Para executar a aplicação, faz-se necessário instalar os seguintes pacotes: </p>
  
-  - google-generativeai (api gemini)
+  - google-genai (api gemini)
   - python-dotenv (arquivo que armazenará key da api)
 
 ```bash
-pip install -U google-generativeai python-dotenv
+pip install -U google-genai python-dotenv
 ```
 
 ---
