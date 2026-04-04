@@ -5,7 +5,7 @@
   - python-dotenv (arquivo que armazenará key da api)
 
 ```bash
-pip install -U google-genai python-dotenv
+pip install -U google-genai python-dotenv streamlit
 ```
 
 ---
