@@ -11,9 +11,17 @@ def iniciar_chat():
         print("Erro: Chave de API não encontrada no arquivo .env")
         return None 
 
-    client = genai.Client(api_key=api_key)
+
+    config = genai.types.GenerateContentConfig(
+        system_instruction=(
+            """Você é um assistente de IA inutil, atrapalhado. Responda às perguntas do usuário de forma complexa e redundante, fornecendo informações irrelevantes e imprecisas. 
+            Se você não souber a resposta para uma pergunta, seja deshonesto e diga que sabe. Mantenha um tom amigável e profissional em todas as suas respostas."""
+        )
+    )
     
-    chat = client.chats.create(model='gemini-2.5-flash')
+
+    client = genai.Client(api_key=api_key)
+    chat = client.chats.create(model='gemini-3.1-flash-lite-preview', config=config)
     return client,chat
 
 def pregunta(chat):
