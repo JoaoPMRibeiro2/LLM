@@ -1,9 +1,10 @@
-<h2 align = "center">Descrição do Projeto</h2>
-<p align = "justify">&emsp;O Gpteculos 2.0 é uma aplicação web interativa que utiliza inteligência artificial para criar uma experiência de chat propositalmente caótica e bem-humorada. Ao contrário de assistentes convencionais, esta IA é configurada para ser "inútil e atrapalhada", respondendo de forma complexa, redundante e com informações propositalmente imprecisas, mantendo sempre um tom amigável e confiante. É uma ferramenta de entretenimento que explora a flexibilidade das instruções de sistema em modelos de linguagem de grande escala (LLMs).</p>
+<h3 align = "center"><b>Descrição do Projeto</b></h3>
+<p align = "justify">&emsp;&emsp;O Gpteculos 2.0 é uma aplicação web interativa que utiliza inteligência artificial para criar uma experiência de chat propositalmente caótica e bem-humorada. Ao contrário de assistentes convencionais, esta IA é configurada para ser "inútil e atrapalhada", respondendo de forma complexa, redundante e com informações propositalmente imprecisas, mantendo sempre um tom amigável e confiante. É uma ferramenta de entretenimento que explora a flexibilidade das instruções de sistema em modelos de linguagem de grande escala (LLMs).</p>
 
+---
 
-<h2 align = "center">Tecnologias Utilizadas</h2>
-<p align = "justify">&emsp;O projeto foi desenvolvido utilizando as seguintes tecnologias:</p>
+<h3 align = "center"><b>Tecnologias Utilizadas</b></h3>
+<p align = "justify">&emsp;&emsp;O projeto foi desenvolvido utilizando as seguintes tecnologias:</p>
 
  - Python: Linguagem de programação base.
 
@@ -17,8 +18,9 @@
 
 --- 
 
-<h2 align = "center"> Instruções de execução </h2>
-<p align = "justify">&emsp;Para executar a aplicação, faz-se necessário instalar os seguintes pacotes: </p>
+<h3 align = "center"> <b>Instruções de execução</b></h3>
+
+<p align = "justify">&emsp;&emsp;Para executar a aplicação, faz-se necessário instalar os seguintes pacotes: </p>
  
   - google-genai 
   - python-dotenv 
@@ -30,8 +32,8 @@ pip install -U google-genai python-dotenv streamlit
 
 ---
 
-## ⚠️ | Atenção 
-<p align = "justify">&emsp;A chave do agente utilizado não estará presente no repositório, pois, ao envia-la para o GitHub, há grandes chances de ser derrubada pelo próprio Google. Sendo assim, cabe a você:</p>
+### ⚠️ | Atenção 
+<p align = "justify">&emsp;&emsp;A chave do agente utilizado não estará presente no repositório, pois, ao envia-la para o GitHub, há grandes chances de ser derrubada pelo próprio Google. Sendo assim, cabe a você:</p>
 
   - Criar um arquivo .env na pasta src 
   - Utilizar a sua própria chave
