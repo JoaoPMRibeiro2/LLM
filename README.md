@@ -1,8 +1,28 @@
+<h2 align = "center">Descrição do Projeto</h2>
+<p align = "justify">&emsp;O Gpteculos 2.0 é uma aplicação web interativa que utiliza inteligência artificial para criar uma experiência de chat propositalmente caótica e bem-humorada. Ao contrário de assistentes convencionais, esta IA é configurada para ser "inútil e atrapalhada", respondendo de forma complexa, redundante e com informações propositalmente imprecisas, mantendo sempre um tom amigável e confiante. É uma ferramenta de entretenimento que explora a flexibilidade das instruções de sistema em modelos de linguagem de grande escala (LLMs).</p>
+
+
+<h2 align = "center">Tecnologias Utilizadas</h2>
+<p align = "justify">&emsp;O projeto foi desenvolvido utilizando as seguintes tecnologias:</p>
+
+ - Python: Linguagem de programação base.
+
+ - Streamlit: Framework utilizado para a criação da interface gráfica e gerenciamento do estado da sessão do chat.
+
+ - Google GenAI SDK: Biblioteca oficial para integração com os modelos Gemini da Google.
+
+ - Modelo Gemini 3.1 Flash-Lite-Preview: O motor de IA utilizado para processar as mensagens.
+
+ - Python-dotenv: Para o gerenciamento seguro de variáveis de ambiente (chaves de API).
+
+--- 
+
 <h2 align = "center"> Instruções de execução </h2>
 <p align = "justify">&emsp;Para executar a aplicação, faz-se necessário instalar os seguintes pacotes: </p>
  
-  - google-genai (api gemini)
-  - python-dotenv (arquivo que armazenará key da api)
+  - google-genai 
+  - python-dotenv 
+  - streamlit
 
 ```bash
 pip install -U google-genai python-dotenv streamlit
