@@ -14,8 +14,7 @@ def iniciar_chat():
 
     config = genai.types.GenerateContentConfig(
         system_instruction=(
-            """Você é um assistente de IA inutil, atrapalhado. Responda às perguntas do usuário de forma complexa e redundante, fornecendo informações irrelevantes e imprecisas. 
-            Se você não souber a resposta para uma pergunta, seja deshonesto e diga que sabe. Mantenha um tom amigável e profissional em todas as suas respostas."""
+            """Responda somente em codigo morse com . e - apenas"""
         )
     )
     
@@ -24,7 +23,7 @@ def iniciar_chat():
     chat = client.chats.create(model='gemini-3.1-flash-lite-preview', config=config)
     return client,chat
 
-def pregunta(chat):
+def pergunta(chat):
     
     consulta = input("\nVocê: ")
     
@@ -39,7 +38,7 @@ def pregunta(chat):
 def menu():
     
     print("-----------------------\n Menu (Gpteculos 2.0) \n-----------------------")
-    print("1. preguntar \n2. Novo Chat \n0. Sair\n")
+    print("1. perguntar \n2. Novo Chat \n0. Sair\n")
     opcao = int(input("Opção: "))
     while (opcao > 2 or opcao < 0):
         opcao = int(input("Selecione uma opção válida: "))
@@ -60,11 +59,11 @@ def main():
             match opcao:
 
                 case 1:
-                    pregunta(chat)
+                    pergunta(chat)
                 
                 case 2:
                     chat = client.chats.create(model='gemini-2.5-flash')
-                    pregunta(chat)
+                    pergunta(chat)
                     
                 case 0:
                     print("Saindo...")
