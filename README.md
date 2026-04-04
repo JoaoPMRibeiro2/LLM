@@ -33,7 +33,7 @@ pip install -U google-genai python-dotenv streamlit
 
 ### ⚠️ | Atenção 
 
-<p align = "justify">&emsp;&emsp;A chave do agente utilizado não estará presente no repositório, pois, ao envia-la para o GitHub, há grandes chances de ser derrubada pelo próprio Google. Sendo assim, cabe a você:</p>
+<p align = "justify">&emsp;&emsp;A chave do agente utilizado não está presente no repositório, pois, ao envia-la para o GitHub, será derrubada pelo próprio Google. Sendo assim, cabe a você:</p>
 
   - Criar um arquivo .env na pasta src 
   - Utilizar a sua própria chave
@@ -44,11 +44,6 @@ pip install -U google-genai python-dotenv streamlit
     Arquivo .env na pasta indicada contendo a key adquirida
   </kbd>
 </div>
-
-<p align = "justify">&emsp;&emsp; Versões utilizadas:
-
-
-
    
 ---
 
