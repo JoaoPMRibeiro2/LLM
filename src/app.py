@@ -12,7 +12,7 @@ def iniciar_chat():
     api_key = os.getenv("GOOGLE_API_KEY")
 
     if not api_key:
-        st.error("Erro: Chave de API não encontrada no arquivo .env")
+        st.error("Erro: Chave de API nã encontrada no arquivo .env")
         return None, None
 
     config = genai.types.GenerateContentConfig(
