@@ -70,6 +70,6 @@ Como obter chave gratuita: https://www.youtube.com/watch?v=Uyn-P2nRvDA&t=14s
 
 <div align="center">
   <kbd>
-    <video src="https://github.com/JoaoPMRibeiro2/LLM/raw/refs/heads/main/vid/LLM.mp4" width="320" height="240" controls></video>
+    <video src="vid/LLM.mp4" controls autoplay loop muted width="320" height="240"> </video>
   </kbd>
 </div>
