@@ -66,7 +66,7 @@ Como obter chave gratuita: https://www.youtube.com/watch?v=Uyn-P2nRvDA&t=14s
 
 ### 🎥 | Aplicação em funcionamento
 
-[Video](vid/LLM.mp4)
+[Video](https://github.com/JoaoPMRibeiro2/LLM/raw/refs/heads/main/vid/LLM.mp4)
 
 <div align="center">
   <video src="https://github.com/JoaoPMRibeiro2/LLM/raw/refs/heads/main/vid/LLM.mp4" width="600" controls></video>
