@@ -1,5 +1,5 @@
 ### 📝 Descrição do Projeto
-<p align="justify">&emsp;&emsp;O <b>Guia de Saúde</b> é uma aplicação web interativa desenvolvida para atuar como um assistente virtual focado em pré-triagem e orientação de sintomas. Ao interagir com o utilizador, a Inteligência Artificial recolhe informações sobre o quadro clínico, formula hipóteses (sem fornecer diagnósticos definitivos) e encaminha para a especialidade médica mais adequada. A aplicação possui protocolos de segurança rígidos, identificando sinais de emergência e emitindo sempre alertas informativos sobre a necessidade de consulta com um profissional de saúde qualificado.</p></p>
+<p align="justify">&emsp;&emsp;O <b>Guia de Saúde</b> é uma aplicação web interativa desenvolvida para atuar como um assistente virtual focado em pré-triagem e orientação de sintomas. Ao interagir com o utilizador, a Inteligência Artificial recolhe informações sobre o quadro clínico, formula hipóteses (sem fornecer diagnósticos definitivos) e encaminha para a especialidade médica mais adequada.</p>
 
 ---
 
