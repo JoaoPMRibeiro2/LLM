@@ -29,8 +29,13 @@
 pip install -U google-genai python-dotenv streamlit
 ```
 
-Após a instalação das dependências, na pasta src,inicie a aplicação com o seguinte comando:
+<p align = "justify">&emsp;&emsp;Após a instalação das dependências, na pasta src,inicie a aplicação com o seguinte comando:</p>
 
+```bash
+streamlit run app.py
+```
+
+<p align = "justify">&emsp;&emsp;Acesse o link gerado:</p>
 ---
 
 ### ⚠️ | Atenção 
