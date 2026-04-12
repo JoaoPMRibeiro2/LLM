@@ -7,7 +7,7 @@ import uuid
 # Configuração da página
 st.set_page_config(page_title="Guia de Saúde", page_icon="🩺", layout="centered")
 
-# --- ESTILOS VISUAIS (CSS) ---
+# Estilização
 def aplicar_estilos():
     st.markdown("""
     <style>
