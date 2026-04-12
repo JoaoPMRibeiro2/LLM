@@ -1,8 +1,8 @@
 import os
+import uuid
 import streamlit as st
 from google import genai
 from dotenv import load_dotenv
-import uuid
 
 # Configuração da página
 st.set_page_config(page_title="Guia de Saúde", page_icon="🩺", layout="centered")
@@ -74,7 +74,7 @@ def iniciar_chat():
         temperature=0.3 # Temperatura baixa para respostas precisas e seguras
     )
     
-    chat = client.chats.create(model='gemma-4-31b-it', config=config)
+    chat = client.chats.create(model='gemini-3.1-flash-lite-preview', config=config)
     return client, chat
 
 aplicar_estilos()
