@@ -1,5 +1,5 @@
 ### 📝 Descrição do Projeto
-<p align = "justify">&emsp;&emsp;O Gpteculos 2.0 é uma aplicação web interativa que utiliza inteligência artificial para criar uma experiência de chat propositalmente caótica e bem-humorada. Ao contrário de assistentes convencionais, esta IA é configurada para ser "inútil e atrapalhada", respondendo de forma complexa, redundante e com informações propositalmente imprecisas, mantendo sempre um tom amigável e confiante. É uma ferramenta de entretenimento que explora a flexibilidade das instruções de sistema em modelos de linguagem de grande escala (LLMs).</p>
+<p align="justify">&emsp;&emsp;O <b>Guia de Saúde</b> é uma aplicação web interativa desenvolvida para atuar como um assistente virtual focado em pré-triagem e orientação de sintomas. Ao interagir com o utilizador, a Inteligência Artificial recolhe informações sobre o quadro clínico, formula hipóteses (sem fornecer diagnósticos definitivos) e encaminha para a especialidade médica mais adequada. A aplicação possui protocolos de segurança rígidos, identificando sinais de emergência e emitindo sempre alertas informativos sobre a necessidade de consulta com um profissional de saúde qualificado.</p></p>
 
 ---
 
@@ -11,7 +11,7 @@
 
  - **Google GenAI SDK (1.70.0)**: Biblioteca oficial para integração com os modelos Gemini da Google.
 
- - **Modelo Gemini 3.1 Flash-Lite-Preview**: O motor de IA utilizado para processar as mensagens.
+ - **Modelo Gemma-4-31b-it**: O motor de IA utilizado para processar as mensagens.
 
  - **Python-dotenv (1.2.2)**: Para o gerenciamento seguro de variáveis de ambiente (chaves de API).
 
@@ -28,6 +28,8 @@
 ```bash
 pip install -U google-genai python-dotenv streamlit
 ```
+
+Após a instalação das dependências, na pasta src,inicie a aplicação com o seguinte comando:
 
 ---
 
