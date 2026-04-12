@@ -11,11 +11,10 @@ st.set_page_config(page_title="Guia de Saúde", page_icon="🩺", layout="center
 def aplicar_estilos():
     st.markdown("""
     <style>
-        /* Esconde o menu padrão e o rodapé do Streamlit */
+
         #MainMenu {visibility: hidden;}
         footer {visibility: hidden;}
         
-        /* Arredonda os botões e adiciona efeito hover */
         .stButton > button {
             border-radius: 15px;
             border: 1px solid #e0e0e0;
@@ -26,7 +25,6 @@ def aplicar_estilos():
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
         
-        /* Título com efeito gradiente (Tons de Azul e Verde Médico) */
         .title-font {
             background: -webkit-linear-gradient(45deg, #00C6FF, #0072FF);
             -webkit-background-clip: text;
@@ -38,15 +36,22 @@ def aplicar_estilos():
     </style>
     """, unsafe_allow_html=True)
 
-def iniciar_chat():
+@st.cache_resource
+def obter_cliente_cache():
     load_dotenv()
     api_key = os.getenv("GOOGLE_API_KEY")
-
     if not api_key:
+        return None
+    return genai.Client(api_key=api_key)
+
+def iniciar_chat():
+
+    client = obter_cliente_cache()
+    
+    if not client:
         st.error("🚨 Erro: Chave de API não encontrada no ficheiro .env")
         return None, None
 
-    # NOVO CÉREBRO: Seguro, ético e focado em triagem
     config = genai.types.GenerateContentConfig(
         system_instruction=(
             "Você é o 'Guia de Saúde', um assistente virtual focado em pré-triagem e orientação. "
@@ -61,6 +66,7 @@ def iniciar_chat():
             "4. Encaminhamento: Diga qual especialidade médica o usuário deve procurar (ex: Cardiologista, Ortopedista, Clínico Geral).\n\n"
             
             "REGRAS DE SEGURANÇA INEGOCIÁVEIS:\n"
+            "- Não responda perguntas que não sejam relacionadas a sintomas ou saúde. Mantenha o foco na triagem.\n"
             "- Inclua SEMPRE este aviso em sua resposta final: '⚠️ *Aviso: Sou uma Inteligência Artificial. Esta análise é apenas informativa e não substitui uma consulta médica. Não inicie tratamentos por conta própria.*'\n"
             "- Se detectar sintomas de emergência (dor no peito, dormência súbita, falta de ar grave, confusão mental, sangramento intenso), "
             "PARE TUDO e instrua o usuário a ir IMEDIATAMENTE a um pronto-socorro ou ligar para a emergência local."
@@ -68,18 +74,14 @@ def iniciar_chat():
         temperature=0.3 # Temperatura baixa para respostas precisas e seguras
     )
     
-    client = genai.Client(api_key=api_key)
-    chat = client.chats.create(model='gemini-3.1-flash-lite-preview', config=config)
+    chat = client.chats.create(model='gemma-4-31b-it', config=config)
     return client, chat
 
-# Aplica o CSS customizado
 aplicar_estilos()
 
-# Título estilizado na página principal
 st.markdown('<h1 class="title-font">🩺 Guia de Saúde</h1>', unsafe_allow_html=True)
 st.caption("O seu assistente virtual de pré-triagem e orientação. 🏥")
 
-# --- INICIALIZAÇÃO DO ESTADO DA SESSÃO ---
 if "client" not in st.session_state:
     client, chat = iniciar_chat()
     st.session_state.client = client
@@ -95,13 +97,12 @@ if "client" not in st.session_state:
     st.session_state.current_chat_id = chat_id
     st.session_state.chat_counter = 1
 
-# --- MENU LATERAL (SIDEBAR) ---
 with st.sidebar:
-    # Ícone médico para a lateral
+
     st.image("https://cdn-icons-png.flaticon.com/512/2966/2966327.png", width=70) 
-    st.header("Histórico de Triagens 📂")
+    st.header("Histórico de Triagens:")
     
-    if st.button("✨ Iniciar Nova Triagem", use_container_width=True, type="primary"):
+    if st.button("Iniciar Nova Triagem:", use_container_width=True, type="primary"):
         if st.session_state.client:
             _, novo_chat = iniciar_chat()
             st.session_state.chat_counter += 1
@@ -116,7 +117,7 @@ with st.sidebar:
             st.rerun()
             
     st.divider()
-    
+
     # Renderização da lista de chats
     for cid, cdata in list(st.session_state.all_chats.items()):
         col_chat, col_del = st.columns([0.85, 0.15])
@@ -150,7 +151,6 @@ with st.sidebar:
                 st.rerun()
                 
     st.markdown("---")
-    st.caption("Aviso: Dados sensíveis não são guardados na base.")
 
 # --- RENDERIZAÇÃO E LÓGICA DO CHAT ---
 current_id = st.session_state.current_chat_id

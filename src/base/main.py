@@ -2,7 +2,8 @@ import os
 from urllib import response
 from google import genai
 from dotenv import load_dotenv
-## Codigo de teste para o modelo Gemini-3.1-flash-lite-preview, com instruções de comportamento sem interface gráfica.
+## Codigo de teste para o modelo gemma-4-31b-it, com instruções de comportamento sem interface gráfica.
+
 def iniciar_chat():
     load_dotenv()
     api_key = os.getenv("GOOGLE_API_KEY")
@@ -35,7 +36,7 @@ def iniciar_chat():
     
 
     client = genai.Client(api_key=api_key)
-    chat = client.chats.create(model='gemini-3.1-flash-lite-preview', config=config)
+    chat = client.chats.create(model='gemma-4-31b-it', config=config)
     return client,chat
 
 def pergunta(chat):
