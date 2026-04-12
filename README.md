@@ -36,12 +36,14 @@ streamlit run app.py
 ```
 
 <p align = "justify">&emsp;&emsp;Acesse o link gerado:</p>
----
+
 <div align="center">
   <kbd>
     <img src="img/link.png"><br>
   </kbd>
 </div>
+
+---
 
 ### ⚠️ | Atenção 
 
