@@ -152,21 +152,17 @@ with st.sidebar:
                 
     st.markdown("---")
 
-# --- RENDERIZAÇÃO E LÓGICA DO CHAT ---
 current_id = st.session_state.current_chat_id
 chat_atual = st.session_state.all_chats[current_id]
 
-# Mensagem de estado vazio
 if not chat_atual["messages"]:
     st.info("👋 Olá! Sou o seu Guia de Saúde. Por favor, descreva o que está a sentir, há quanto tempo e com que intensidade. Estou aqui para ajudar a direcioná-lo.")
 
-# Renderiza as mensagens com avatares contextuais
 for message in chat_atual["messages"]:
     avatar_icon = "👤" if message["role"] == "user" else "🩺"
     with st.chat_message(message["role"], avatar=avatar_icon):
         st.markdown(message["content"])
 
-# Caixa de texto de entrada
 if prompt := st.chat_input("Descreva os seus sintomas aqui..."):
     
     with st.chat_message("user", avatar="👤"):
