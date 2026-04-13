@@ -29,7 +29,7 @@
 pip install -U google-genai python-dotenv streamlit
 ```
 
-<p align = "justify">&emsp;&emsp;Após a instalação das dependências, na pasta src,inicie a aplicação com o seguinte comando:</p>
+<p align = "justify">&emsp;&emsp;Após a instalação das dependências, na pasta src, inicie a aplicação com o seguinte comando:</p>
 
 ```bash
 streamlit run app.py
@@ -47,7 +47,7 @@ streamlit run app.py
 
 ### ⚠️ | Atenção 
 
-<p align = "justify">&emsp;&emsp;A chave do agente utilizado não está presente no repositório, pois, ao envia-la para o GitHub, será derrubada pelo próprio Google. Sendo assim, cabe a você:</p>
+<p align = "justify">&emsp;&emsp;A chave do agente utilizado não está presente no repositório, pois, ao enviá-la para o GitHub, será derrubada pelo próprio Google. Sendo assim, cabe a você:</p>
 
   - Criar um arquivo .env na pasta src 
   - Utilizar a sua própria chave
@@ -64,15 +64,15 @@ streamlit run app.py
 ### ❓ | Ajuda
 Como obter chave gratuita: https://www.youtube.com/watch?v=Uyn-P2nRvDA&t=14s
 
-<p align = "justify"><b><i></b>Observação:</i></b></p>
-<p align = "justify">&emsp;A chave será criada no nivel de faturamento gratuito, mas, mesmo assim, é necessário ter uma forma de pagamento cadastrado para criá-la.</p>
+<p align = "justify"><b><i>Observação:</i></b></p>
+<p align = "justify">&emsp;A chave será criada no nível de faturamento gratuito, mas, mesmo assim, é necessário ter uma forma de pagamento cadastrada para criá-la.</p>
 
 
 ---
 
 ### 🎥 | Aplicação em funcionamento
 
-[Video](https://github.com/JoaoPMRibeiro2/LLM/raw/refs/heads/main/vid/LLM.mp4)
+[Vídeo](https://github.com/JoaoPMRibeiro2/LLM/raw/refs/heads/main/vid/LLM.mp4)
 
 <div align="center">
   <video src="https://github.com/JoaoPMRibeiro2/LLM/raw/refs/heads/main/vid/LLM.mp4" width="600" controls></video>
