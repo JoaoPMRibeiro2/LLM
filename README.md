@@ -65,7 +65,7 @@ streamlit run app.py
 Como obter chave gratuita: https://www.youtube.com/watch?v=Uyn-P2nRvDA&t=14s
 
 <p align = "justify"><b><i></b>Observação:</i></b></p>
-<p align = "justify">&emsp;A chave será criada no nivel de faturamento gratuito, mas, mesmo assim, é necessário ter uma forma de pagamento cadastrado para cria-la.</p>
+<p align = "justify">&emsp;A chave será criada no nivel de faturamento gratuito, mas, mesmo assim, é necessário ter uma forma de pagamento cadastrado para criá-la.</p>
 
 
 ---
