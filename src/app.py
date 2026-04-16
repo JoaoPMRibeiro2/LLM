@@ -1,11 +1,20 @@
 import os
+import uuid
 import streamlit as st
+import psycopg2
+from psycopg2.extras import RealDictCursor
 from google import genai
 from dotenv import load_dotenv
-import uuid
 
+# Configuração da página Streamlit
 st.set_page_config(page_title="Guia de Saúde", page_icon="🩺", layout="centered")
 
+# Carregar variáveis de ambiente do .env
+load_dotenv()
+
+# ==========================================
+# FUNÇÕES DE ESTILO
+# ==========================================
 def aplicar_estilos():
     st.markdown("""
     <style>
@@ -20,17 +29,93 @@ def aplicar_estilos():
             transform: translateY(-2px);
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
-        
     </style>
     """, unsafe_allow_html=True)
 
-@st.cache_resource
-def obter_memoria_global():
-    return {"chats": {}, "contador": 1}
+# ==========================================
+# FUNÇÕES DE BANCO DE DADOS (POSTGRESQL)
+# ==========================================
+def obter_conexao():
+    return psycopg2.connect(
+        host=os.getenv("DB_HOST"),
+        database=os.getenv("DB_NAME"),
+        user=os.getenv("DB_USER"),
+        password=os.getenv("DB_PASS"),
+        port=os.getenv("DB_PORT")
+    )
 
+def inicializar_tabelas():
+    conn = obter_conexao()
+    cur = conn.cursor()
+    # Tabela para guardar as sessões de chat
+    cur.execute("""
+        CREATE TABLE IF NOT EXISTS chats (
+            id UUID PRIMARY KEY,
+            titulo TEXT NOT NULL,
+            criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        );
+    """)
+    # Tabela para guardar as mensagens atreladas aos chats
+    cur.execute("""
+        CREATE TABLE IF NOT EXISTS mensagens (
+            id SERIAL PRIMARY KEY,
+            chat_id UUID REFERENCES chats(id) ON DELETE CASCADE,
+            role TEXT NOT NULL,
+            content TEXT NOT NULL,
+            criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        );
+    """)
+    conn.commit()
+    cur.close()
+    conn.close()
+
+def listar_todos_os_chats():
+    conn = obter_conexao()
+    cur = conn.cursor(cursor_factory=RealDictCursor)
+    cur.execute("SELECT * FROM chats ORDER BY criado_em DESC")
+    chats = cur.fetchall()
+    cur.close()
+    conn.close()
+    return chats
+
+def buscar_historico_mensagens(chat_id):
+    conn = obter_conexao()
+    cur = conn.cursor(cursor_factory=RealDictCursor)
+    cur.execute("SELECT role, content FROM mensagens WHERE chat_id = %s ORDER BY criado_em ASC", (chat_id,))
+    msgs = cur.fetchall()
+    cur.close()
+    conn.close()
+    return msgs
+
+def db_criar_novo_chat(chat_id, titulo):
+    conn = obter_conexao()
+    cur = conn.cursor()
+    cur.execute("INSERT INTO chats (id, titulo) VALUES (%s, %s)", (chat_id, titulo))
+    conn.commit()
+    cur.close()
+    conn.close()
+
+def db_salvar_mensagem(chat_id, role, content):
+    conn = obter_conexao()
+    cur = conn.cursor()
+    cur.execute("INSERT INTO mensagens (chat_id, role, content) VALUES (%s, %s, %s)", (chat_id, role, content))
+    conn.commit()
+    cur.close()
+    conn.close()
+
+def db_deletar_chat(chat_id):
+    conn = obter_conexao()
+    cur = conn.cursor()
+    cur.execute("DELETE FROM chats WHERE id = %s", (chat_id,))
+    conn.commit()
+    cur.close()
+    conn.close()
+
+# ==========================================
+# FUNÇÕES DO GOOGLE GEMINI
+# ==========================================
 @st.cache_resource
 def obter_cliente_cache():
-    load_dotenv()
     api_key = os.getenv("GOOGLE_API_KEY")
     if not api_key:
         return None
@@ -56,115 +141,130 @@ def obter_configuracao():
         temperature=0.3
     )
 
-def criar_novo_chat(client):
-    if client:
-        return client.chats.create(model='gemma-4-31b-it', config=obter_configuracao())
-    return None
+def iniciar_sessao_chat(chat_id, cliente):
+    """Reidrata o objeto de chat do Gemini usando o histórico salvo no PostgreSQL"""
+    historico_db = buscar_historico_mensagens(chat_id)
+    historico_genai = []
+    
+    for m in historico_db:
+        role_genai = "user" if m["role"] == "user" else "model"
+        # CORREÇÃO APLICADA AQUI: Utilizando um dicionário com a chave "text"
+        historico_genai.append({
+            "role": role_genai, 
+            "parts": [{"text": m["content"]}]
+        })
+    
+    return cliente.chats.create(
+        model='gemma-4-31b-it', 
+        config=obter_configuracao(),
+        history=historico_genai
+    )
 
-
+# ==========================================
+# APLICAÇÃO PRINCIPAL (STREAMLIT)
+# ==========================================
 def main():
     aplicar_estilos()
+    
+    # Garante que as tabelas existam no banco logo ao abrir o app
+    try:
+        inicializar_tabelas()
+    except Exception as e:
+        st.error(f"🚨 Erro ao conectar com o banco de dados PostgreSQL: {e}")
+        st.warning("Verifique se as credenciais no arquivo .env estão corretas (DB_NAME e a senha com aspas).")
+        return
+
     st.markdown('<h1 class="title-font">🩺 Guia de Saúde</h1>', unsafe_allow_html=True)
     st.caption("O seu assistente virtual de pré-triagem e orientação. 🏥")
 
-    cliente_seguro = obter_cliente_cache()
-    
-    if not cliente_seguro:
-        st.error("🚨 Erro: Chave de API não encontrada.")
+    cliente = obter_cliente_cache()
+    if not cliente:
+        st.error("🚨 Erro: Chave de API do Google não encontrada no arquivo .env.")
         return
 
-    memoria = obter_memoria_global()
-
-    if not memoria["chats"]:
-        chat_inicial = criar_novo_chat(cliente_seguro)
-        chat_id = str(uuid.uuid4())
-        memoria["chats"][chat_id] = {
-            "titulo": "Nova Triagem 📝", 
-            "messages": [], 
-            "chat_obj": chat_inicial
-        }
-        memoria["contador"] = 1
-
-    if "current_chat_id" not in st.session_state or st.session_state.current_chat_id not in memoria["chats"]:
-        st.session_state.current_chat_id = list(memoria["chats"].keys())[0]
-
+    # 1. Carregar Chats Disponíveis da Base de Dados
+    chats_disponiveis = listar_todos_os_chats()
+    
+    # 2. Configurar a Sidebar
     with st.sidebar:
-        st.image("../img/health.png", width=70) 
+        # Se tiver a imagem na pasta img, descomente a linha abaixo
+        # st.image("../img/health.png", width=70) 
         st.header("Histórico de Triagens 📂")
         
         if st.button("✨ Iniciar Nova Triagem", use_container_width=True, type="primary"):
-            novo_chat = criar_novo_chat(cliente_seguro)
-            memoria["contador"] += 1
             novo_id = str(uuid.uuid4())
-            
-            memoria["chats"][novo_id] = {
-                "titulo": f"Atendimento {memoria['contador']} 📝", 
-                "messages": [], 
-                "chat_obj": novo_chat
-            }
+            num_atendimento = len(chats_disponiveis) + 1
+            db_criar_novo_chat(novo_id, f"Atendimento {num_atendimento} 📝")
             st.session_state.current_chat_id = novo_id
             st.rerun()
             
         st.divider()
         
-        for cid, cdata in list(memoria["chats"].items()):
+        # Listar os chats salvos com botão para deletar
+        for c in chats_disponiveis:
             col_chat, col_del = st.columns([0.85, 0.15])
+            cid_str = str(c['id'])
             
             with col_chat:
-                is_current = (cid == st.session_state.current_chat_id)
-                label = f"🟢 {cdata['titulo']}" if is_current else f"⚪ {cdata['titulo']}"
-                if st.button(label, key=f"sel_{cid}", use_container_width=True):
-                    st.session_state.current_chat_id = cid
+                is_current = ("current_chat_id" in st.session_state and cid_str == st.session_state.current_chat_id)
+                label = f"🟢 {c['titulo']}" if is_current else f"⚪ {c['titulo']}"
+                if st.button(label, key=f"btn_{cid_str}", use_container_width=True):
+                    st.session_state.current_chat_id = cid_str
                     st.rerun()
-            
+                    
             with col_del:
-                if st.button("🗑️", key=f"del_{cid}", help="Eliminar registo"):
-                    del memoria["chats"][cid]
-                    
-                    if not memoria["chats"]:
-                        memoria["contador"] = 1
-                        n_chat = criar_novo_chat(cliente_seguro)
-                        n_id = str(uuid.uuid4())
-                        memoria["chats"][n_id] = {
-                            "titulo": "Nova Triagem 📝", 
-                            "messages": [], 
-                            "chat_obj": n_chat
-                        }
-                        st.session_state.current_chat_id = n_id
-                    
-                    elif cid == st.session_state.current_chat_id:
-                        st.session_state.current_chat_id = list(memoria["chats"].keys())[0]
-                    
+                if st.button("🗑️", key=f"del_{cid_str}", help="Deletar este chat"):
+                    db_deletar_chat(cid_str)
+                    if st.session_state.get("current_chat_id") == cid_str:
+                        del st.session_state.current_chat_id
                     st.rerun()
-                    
         st.markdown("---")
 
-    current_id = st.session_state.current_chat_id
-    chat_atual = memoria["chats"][current_id]
+    # 3. Gerenciar o Chat Atual Selecionado
+    if "current_chat_id" not in st.session_state:
+        if chats_disponiveis:
+            st.session_state.current_chat_id = str(chats_disponiveis[0]['id'])
+        else:
+            primeiro_id = str(uuid.uuid4())
+            db_criar_novo_chat(primeiro_id, "Nova Triagem 📝")
+            st.session_state.current_chat_id = primeiro_id
+            st.rerun()
 
-    if not chat_atual["messages"]:
+    current_id = st.session_state.current_chat_id
+    
+    # 4. Reidratar a sessão do GenAI
+    if "chat_obj" not in st.session_state or st.session_state.get("last_chat_id") != current_id:
+        try:
+            st.session_state.chat_obj = iniciar_sessao_chat(current_id, cliente)
+            st.session_state.last_chat_id = current_id
+        except Exception as e:
+            st.error(f"Erro ao carregar o histórico com a IA: {e}")
+            return
+
+    # 5. Buscar e Exibir as Mensagens do Banco de Dados
+    mensagens = buscar_historico_mensagens(current_id)
+    
+    if not mensagens:
         st.info("👋 Olá! Sou o seu Guia de Saúde. Por favor, descreva o que está a sentir, há quanto tempo e com que intensidade.")
 
-    for message in chat_atual["messages"]:
-        avatar_icon = "👤" if message["role"] == "user" else "🩺"
-        with st.chat_message(message["role"], avatar=avatar_icon):
-            st.markdown(message["content"])
+    for msg in mensagens:
+        avatar_icon = "👤" if msg["role"] == "user" else "🩺"
+        with st.chat_message(msg["role"], avatar=avatar_icon):
+            st.markdown(msg["content"])
 
+    # 6. Input de Novas Mensagens
     if prompt := st.chat_input("Descreva os seus sintomas aqui..."):
         
         with st.chat_message("user", avatar="👤"):
             st.markdown(prompt)
-        
-        chat_atual["messages"].append({"role": "user", "content": prompt})
+        db_salvar_mensagem(current_id, "user", prompt)
 
         with st.chat_message("assistant", avatar="🩺"):
             try:
                 with st.spinner("A analisar os sintomas... 🩺"):
-                    resposta = chat_atual["chat_obj"].send_message(prompt)
+                    resposta = st.session_state.chat_obj.send_message(prompt)
                     st.markdown(resposta.text)
-                    
-                chat_atual["messages"].append({"role": "assistant", "content": resposta.text})
-                
+                    db_salvar_mensagem(current_id, "assistant", resposta.text)
             except Exception as e:
                 st.error(f"🚨 Ocorreu um erro no sistema: {e}")
 

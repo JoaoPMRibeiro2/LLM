@@ -15,6 +15,10 @@
 
  - **Python-dotenv (1.2.2)**: Para o gerenciamento seguro de variáveis de ambiente (chaves de API).
 
+ - **PostgreSQL**: Sistema de Gerenciamento de Banco de Dados Relacional utilizado para armazenar e gerenciar o histórico das sessões de chat e das mensagens.
+
+ - **Psycopg2**: Adaptador de banco de dados PostgreSQL para a linguagem Python, permitindo a comunicação e execução de queries de forma eficiente.
+
 --- 
 
 ### 🚀Instruções de execução
@@ -26,13 +30,13 @@
   - streamlit
 
 ```bash
-pip install -U google-genai python-dotenv streamlit
+pip install -U google-genai python-dotenv streamlit psycopg2-binary
 ```
 
 <p align = "justify">&emsp;&emsp;Após a instalação das dependências, na pasta src, inicie a aplicação com o seguinte comando:</p>
 
 ```bash
-streamlit run app.py
+python -m streamlit run app.py
 ```
 
 <p align = "justify">&emsp;&emsp;Acesse o link gerado:</p>
