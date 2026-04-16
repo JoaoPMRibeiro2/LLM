@@ -6,15 +6,10 @@ from psycopg2.extras import RealDictCursor
 from google import genai
 from dotenv import load_dotenv
 
-# Configuração da página Streamlit
 st.set_page_config(page_title="Guia de Saúde", page_icon="🩺", layout="centered")
 
-# Carregar variáveis de ambiente do .env
 load_dotenv()
 
-# ==========================================
-# FUNÇÕES DE ESTILO
-# ==========================================
 def aplicar_estilos():
     st.markdown("""
     <style>
@@ -32,9 +27,6 @@ def aplicar_estilos():
     </style>
     """, unsafe_allow_html=True)
 
-# ==========================================
-# FUNÇÕES DE BANCO DE DADOS (POSTGRESQL)
-# ==========================================
 def obter_conexao():
     return psycopg2.connect(
         host=os.getenv("DB_HOST"),
@@ -47,7 +39,6 @@ def obter_conexao():
 def inicializar_tabelas():
     conn = obter_conexao()
     cur = conn.cursor()
-    # Tabela para guardar as sessões de chat
     cur.execute("""
         CREATE TABLE IF NOT EXISTS chats (
             id UUID PRIMARY KEY,
@@ -55,7 +46,6 @@ def inicializar_tabelas():
             criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         );
     """)
-    # Tabela para guardar as mensagens atreladas aos chats
     cur.execute("""
         CREATE TABLE IF NOT EXISTS mensagens (
             id SERIAL PRIMARY KEY,
@@ -111,9 +101,6 @@ def db_deletar_chat(chat_id):
     cur.close()
     conn.close()
 
-# ==========================================
-# FUNÇÕES DO GOOGLE GEMINI
-# ==========================================
 @st.cache_resource
 def obter_cliente_cache():
     api_key = os.getenv("GOOGLE_API_KEY")
@@ -142,13 +129,11 @@ def obter_configuracao():
     )
 
 def iniciar_sessao_chat(chat_id, cliente):
-    """Reidrata o objeto de chat do Gemini usando o histórico salvo no PostgreSQL"""
     historico_db = buscar_historico_mensagens(chat_id)
     historico_genai = []
     
     for m in historico_db:
         role_genai = "user" if m["role"] == "user" else "model"
-        # CORREÇÃO APLICADA AQUI: Utilizando um dicionário com a chave "text"
         historico_genai.append({
             "role": role_genai, 
             "parts": [{"text": m["content"]}]
@@ -160,13 +145,9 @@ def iniciar_sessao_chat(chat_id, cliente):
         history=historico_genai
     )
 
-# ==========================================
-# APLICAÇÃO PRINCIPAL (STREAMLIT)
-# ==========================================
 def main():
     aplicar_estilos()
     
-    # Garante que as tabelas existam no banco logo ao abrir o app
     try:
         inicializar_tabelas()
     except Exception as e:
@@ -182,13 +163,9 @@ def main():
         st.error("🚨 Erro: Chave de API do Google não encontrada no arquivo .env.")
         return
 
-    # 1. Carregar Chats Disponíveis da Base de Dados
     chats_disponiveis = listar_todos_os_chats()
     
-    # 2. Configurar a Sidebar
     with st.sidebar:
-        # Se tiver a imagem na pasta img, descomente a linha abaixo
-        # st.image("../img/health.png", width=70) 
         st.header("Histórico de Triagens 📂")
         
         if st.button("✨ Iniciar Nova Triagem", use_container_width=True, type="primary"):
@@ -200,7 +177,6 @@ def main():
             
         st.divider()
         
-        # Listar os chats salvos com botão para deletar
         for c in chats_disponiveis:
             col_chat, col_del = st.columns([0.85, 0.15])
             cid_str = str(c['id'])
@@ -220,7 +196,6 @@ def main():
                     st.rerun()
         st.markdown("---")
 
-    # 3. Gerenciar o Chat Atual Selecionado
     if "current_chat_id" not in st.session_state:
         if chats_disponiveis:
             st.session_state.current_chat_id = str(chats_disponiveis[0]['id'])
@@ -232,7 +207,6 @@ def main():
 
     current_id = st.session_state.current_chat_id
     
-    # 4. Reidratar a sessão do GenAI
     if "chat_obj" not in st.session_state or st.session_state.get("last_chat_id") != current_id:
         try:
             st.session_state.chat_obj = iniciar_sessao_chat(current_id, cliente)
@@ -241,7 +215,6 @@ def main():
             st.error(f"Erro ao carregar o histórico com a IA: {e}")
             return
 
-    # 5. Buscar e Exibir as Mensagens do Banco de Dados
     mensagens = buscar_historico_mensagens(current_id)
     
     if not mensagens:
@@ -252,7 +225,6 @@ def main():
         with st.chat_message(msg["role"], avatar=avatar_icon):
             st.markdown(msg["content"])
 
-    # 6. Input de Novas Mensagens
     if prompt := st.chat_input("Descreva os seus sintomas aqui..."):
         
         with st.chat_message("user", avatar="👤"):
