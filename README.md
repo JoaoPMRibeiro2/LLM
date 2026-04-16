@@ -55,11 +55,12 @@ python -m streamlit run app.py
 
   - Criar um arquivo .env na pasta src 
   - Utilizar a sua própria chave
+  - Passar as suas credênciais do banco de dados
 
  <div align="center">
   <kbd>
     <img src="img/env.png" alt="Modelo do arquivo .env na pasta indicada "><br>
-    Arquivo .env na pasta indicada contendo a key adquirida
+    Arquivo .env na pasta indicada contendo a key adquirida e as variaveis de conexão com o banco
   </kbd>
 </div>
    
