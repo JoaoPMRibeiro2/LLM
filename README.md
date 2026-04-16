@@ -73,13 +73,6 @@ Como obter chave gratuita: https://www.youtube.com/watch?v=Uyn-P2nRvDA&t=14s
 <p align = "justify"><b><i>Observação:</i></b></p>
 <p align = "justify">&emsp;A chave será criada no nível de faturamento gratuito, mas, mesmo assim, é necessário ter uma forma de pagamento cadastrada para criá-la.</p>
 
-
----
-
-### 🎥 | Aplicação em funcionamento
-
-[Vídeo](https://github.com/JoaoPMRibeiro2/demonstracao/raw/refs/heads/main/vid/demonstracao.mp4)
-
 <div align="center">
   <video src="https://github.com/JoaoPMRibeiro2/LLM/raw/refs/heads/main/vid/LLM.mp4" width="600" controls></video>
 </div>
