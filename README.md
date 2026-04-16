@@ -28,7 +28,8 @@
   - google-genai 
   - python-dotenv 
   - streamlit
-
+  - psycopg2-binary
+  
 ```bash
 pip install -U google-genai python-dotenv streamlit psycopg2-binary
 ```
